@@ -113,16 +113,40 @@
   $ make install
 </code></pre>
 
+<p>  这种方法的不足是使用起来比较复杂，而且在以后对程序进行编译时可能还需要加上编译参数         -lgthread-2.0。</p>
+
 <p>  第二种方法是在libnids的初始化函数nids_init()运行之前，加入如下代码：</p>
 
-<pre><code>      struct nids_chksum_ctl temp;
-      temp.netaddr = 0;
-      temp.mask = 0;
-      temp.action = 1;
-      nids_register_chksum_ctl(&amp;temp,1);
+<pre><code>  struct nids_chksum_ctl temp;
+  temp.netaddr = 0;
+  temp.mask = 0;
+  temp.action = 1;
+  nids_register_chksum_ctl(&amp;temp,1);
 </code></pre>
 
 <p>  不用说，这段代码的目的也是取消校验和，其中nids_chksum_ctl是libnids中定义的数据结构，netaddr表示网络地址，mask表示掩码，如果两个都为0表示的是所有的地址，action为1表示不用首部校验。</p></li>
+<li><p>C与C++混合编译出现的各种undefined reference错误</p>
+
+<p>  由于Libnids源码大部分使用C编写的（其中还包括部分汇编），因此如果你想在面向对象的程序中使用它可能会出现一点点小麻烦。也许虽然你的程序已经经过了编译这一步，但是在链接的时候总是会出现undefined reference to 错误。这其实是C和C++混编的原因，如果想解决这个问题，在C++文件包含C的头文件时，可以加上extern &#8220;C&#8221;标记，让编译器知道这是C的文件，其中header.h是C的头文件。</p>
+
+<pre><code>  extern "C" { 
+      #include "header.h" 
+  } 
+</code></pre>
+
+<p> 如果想在C++文件中使用C文件中的函数，也可以采用类似的方法，yourfun表示你想要使用的函数，如下所示，这样可以就可以避免编译中的这些问题了。</p>
+
+<pre><code>  #ifdef __cplusplus
+      extern "C" {
+  #endif
+      void yourfunc(int a,inta)
+  #ifdef __cplusplus
+      }
+  #endif
+</code></pre></li>
+<li><p>libnids与图像界面结合时导致的线程阻塞。</p>
+
+<p>  如果你的程序是使用图像界面的，如QT，MFC等，好不容易让程序能够运行起来，却发现程序时出现了阻塞，也就是界面假死的先现象，调试是能够发现运行到nids_run()后程序便这是因为nids_run()启动后占用了</p></li>
 </ul>
 
 </div>
