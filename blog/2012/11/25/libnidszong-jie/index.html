@@ -5,13 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Blog Archive - SudyDuan's Blog</title>
+  <title>Libnids使用总结 - SudyDuan's Blog</title>
   <meta name="author" content="Sudy Duan">
 
   
-  <meta name="description" content="Blog Archive 2012 Libnids使用总结
-Nov 25 2012 posted in 网络安全 写在前面的话
-Nov 25 2012 Recent Posts Libnids使用总结 写在前面的话 GitHub Repos Status updating... @Sudy on &hellip;">
+  <meta name="description" content="使用中可能遇到的问题 无法捕获TC协议的报文 TCP流还原是Libnids中一个非常重要的功能，一般人在安装完libnids后一般都会拿samples文件夹里的printall.c练练手，看看libnids是否运行正常，这个例子是打印出所有流经网卡的TCP数据包信息。 &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -20,7 +18,7 @@ Nov 25 2012 Recent Posts Libnids使用总结 写在前面的话 GitHub Repos Sta
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://Sudy.github.com/blog/archives/">
+  <link rel="canonical" href="http://Sudy.github.com/blog/2012/11/25/libnidszong-jie/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
    <link href="/stylesheets/data-table.css" media="screen, projection" rel="stylesheet" type="text/css" />
@@ -64,45 +62,119 @@ Nov 25 2012 Recent Posts Libnids使用总结 写在前面的话 GitHub Repos Sta
   <div id="main">
     <div id="content">
       <div>
-<article role="article">
+<article class="hentry" role="article">
   
   <header>
-    <h1 class="entry-title">Blog Archive</h1>
+    
+      <h1 class="entry-title">Libnids使用总结</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-11-25T20:11:00+08:00" pubdate data-updated="true">Nov 25<span>th</span>, 2012</time>
+        
+      </p>
     
   </header>
-  
-  <div id="blog-archives">
 
 
+<div class="entry-content"><h2>使用中可能遇到的问题</h2>
 
-  
-  <h2>2012</h2>
+<ul>
+<li><p>无法捕获TC协议的报文</p>
 
-<article>
-  
-<h1><a href="/blog/2012/11/25/libnidszong-jie/">Libnids使用总结</a></h1>
-<time datetime="2012-11-25T20:11:00+08:00" pubdate><span class='month'>Nov</span> <span class='day'>25</span> <span class='year'>2012</span></time>
+<p>  TCP流还原是Libnids中一个非常重要的功能，一般人在安装完libnids后一般都会拿samples文件夹里的printall.c练练手，看看libnids是否运行正常，这个例子是打印出所有流经网卡的TCP数据包信息。这个问题的起因是libnids默认开启了TCP的首部校验，在这里进行了TCP的首部校验，如果报文无法通过校验，则该报文被丢弃。因此程序虽然能够正常地编译通过，但是却无法捕获到数据包。知道问题的起因，我们就能对症下药。</p>
 
-<footer>
-  <span class="categories">posted in <a class='category' href='/blog/categories/网络安全/'>网络安全</a></span>
-</footer>
+<p>  解决这个问题通常有两种方法，第一种比较复杂，不推荐使用。在Libnids源码包中tcp.c 文件中大概742行的位置有如下代码：</p>
 
+<pre><code>  if (my_tcp_check(this_tcphdr, iplen - 4 * this_iphdr-&gt;ip_hl,
+           this_iphdr-&gt;ip_src.s_addr, this_iphdr-&gt;ip_dst.s_addr)) {
+         nids_params.syslog(NIDS_WARN_TCP, NIDS_WARN_TCP_HDR, this_iphdr,
+             this_tcphdr);
+         return;
+    }
+</code></pre>
 
-</article>
+<p>  我们可以看出这段代码是进行TCP首部校验，如果无法通过校验，还会作为NIDS_WARN事件记录到系统日志中。所以我们可以注释掉这段代码，然后对源码进行重新编译安装。一般来说是先步骤如下，首先进入libnids安装包的根目录，然后执行以下命令。</p>
 
+<pre><code>  $ ./configure
+  $ make
+  $ make install
+</code></pre>
 
+<p>  第二种方法是在libnids的初始化函数nids_init()运行之前，加入如下代码：</p>
 
-<article>
-  
-<h1><a href="/blog/2012/11/25/xie-zai-qian-mian-de-hua/">写在前面的话</a></h1>
-<time datetime="2012-11-25T16:27:00+08:00" pubdate><span class='month'>Nov</span> <span class='day'>25</span> <span class='year'>2012</span></time>
+<pre><code>      struct nids_chksum_ctl temp;
+      temp.netaddr = 0;
+      temp.mask = 0;
+      temp.action = 1;
+      nids_register_chksum_ctl(&amp;temp,1);
+</code></pre>
 
-
-</article>
+<p>  不用说，这段代码的目的也是取消校验和，其中nids_chksum_ctl是libnids中定义的数据结构，netaddr表示网络地址，mask表示掩码，如果两个都为0表示的是所有的地址，action为1表示不用首部校验。</p></li>
+</ul>
 
 </div>
 
+
+  <footer>
+    <p class="meta">
+      
   
+
+<span class="byline author vcard">Posted by <span class="fn">Sudy Duan</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-11-25T20:11:00+08:00" pubdate data-updated="true">Nov 25<span>th</span>, 2012</time>
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/网络安全/'>网络安全</a>
+  
+</span>
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://Sudy.github.com/blog/2012/11/25/libnidszong-jie/" data-via="" data-counturl="http://Sudy.github.com/blog/2012/11/25/libnidszong-jie/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2012/11/25/xie-zai-qian-mian-de-hua/" title="Previous Post: 写在前面的话">&laquo; 写在前面的话</a>
+      
+      
+    </p>
+  </footer>
 </article>
 
 </div>

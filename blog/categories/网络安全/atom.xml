@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
 
-  <title><![CDATA[SudyDuan's Blog]]></title>
-  <link href="http://Sudy.github.com/atom.xml" rel="self"/>
+  <title><![CDATA[Category: 网络安全 | SudyDuan's Blog]]></title>
+  <link href="http://Sudy.github.com/blog/categories/网络安全/atom.xml" rel="self"/>
   <link href="http://Sudy.github.com/"/>
   <updated>2012-11-25T21:39:37+08:00</updated>
   <id>http://Sudy.github.com/</id>
@@ -54,15 +54,6 @@
 <p>  不用说，这段代码的目的也是取消校验和，其中nids_chksum_ctl是libnids中定义的数据结构，netaddr表示网络地址，mask表示掩码，如果两个都为0表示的是所有的地址，action为1表示不用首部校验。</p></li>
 </ul>
 
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[写在前面的话]]></title>
-    <link href="http://Sudy.github.com/blog/2012/11/25/xie-zai-qian-mian-de-hua/"/>
-    <updated>2012-11-25T16:27:00+08:00</updated>
-    <id>http://Sudy.github.com/blog/2012/11/25/xie-zai-qian-mian-de-hua</id>
-    <content type="html"><![CDATA[
 ]]></content>
   </entry>
   
