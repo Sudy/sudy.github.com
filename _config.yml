@@ -3,11 +3,11 @@
 # ----------------------- #
 
 url: http://Sudy.github.com
-title: My Octopress Blog
-subtitle: A blogging framework for hackers.
-author: Your Name
+title: SudyDuan's Blog
+subtitle: 留给未来的记忆。
+author: Sudy Duan
 simple_search: http://google.com/search
-description:
+description: 这是关于IT技术和生活的博客
 
 # Default date format is "ordinal" (resulting in "July 22nd 2007")
 # You can customize the format as defined in
