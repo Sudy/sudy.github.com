@@ -9,7 +9,7 @@
   <meta name="author" content="Sudy Duan">
 
   
-  <meta name="description" content="使用中可能遇到的问题 无法捕获TC协议的报文 TCP流还原是Libnids中一个非常重要的功能，一般人在安装完libnids后一般都会拿samples文件夹里的printall.c练练手，看看libnids是否运行正常，这个例子是打印出所有流经网卡的TCP数据包信息。 &hellip;">
+  <meta name="description" content="使用中可能遇到的问题 无法捕获TCP协议的报文 TCP流还原是Libnids中一个非常重要的功能，一般人在安装完libnids后一般都会拿samples文件夹里的printall.c练练手，看看libnids是否运行正常，这个例子是打印出所有流经网卡的TCP数据包信息。 &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -89,10 +89,10 @@
   </header>
 
 
-<div class="entry-content"><h2>使用中可能遇到的问题</h2>
+<div class="entry-content"><h1>使用中可能遇到的问题</h1>
 
 <ul>
-<li><p>无法捕获TC协议的报文</p>
+<li><p>无法捕获TCP协议的报文</p>
 
 <p>  TCP流还原是Libnids中一个非常重要的功能，一般人在安装完libnids后一般都会拿samples文件夹里的printall.c练练手，看看libnids是否运行正常，这个例子是打印出所有流经网卡的TCP数据包信息。这个问题的起因是libnids默认开启了TCP的首部校验，在这里进行了TCP的首部校验，如果报文无法通过校验，则该报文被丢弃。因此程序虽然能够正常地编译通过，但是却无法捕获到数据包。知道问题的起因，我们就能对症下药。</p>
 
@@ -134,7 +134,7 @@
   } 
 </code></pre>
 
-<p> 如果想在C++文件中使用C文件中的函数，也可以采用类似的方法，yourfun表示你想要使用的函数，如下所示，这样可以就可以避免编译中的这些问题了。</p>
+<p>  如果想在C++文件中使用C文件中的函数，也可以采用类似的方法，yourfunc表示你想要使用的函数，如下所示，这样可以就可以避免编译中的这些问题了。</p>
 
 <pre><code>  #ifdef __cplusplus
       extern "C" {
@@ -146,7 +146,7 @@
 </code></pre></li>
 <li><p>libnids与图像界面结合时导致的线程阻塞。</p>
 
-<p>  如果你的程序是使用图像界面的，如QT，MFC等，好不容易让程序能够运行起来，却发现程序时出现了阻塞，也就是界面假死的先现象，调试是能够发现运行到nids_run()后程序便这是因为nids_run()启动后占用了</p></li>
+<p>  如果你的程序是使用图像界面的，如QT，MFC等，好不容易让程序能够运行起来，却发现程序时出现了阻塞，也就是界面假死的现象，调试时能够发现运行到nids_run()后便停滞不前了。这是因为nids_run()启动后占用了程序的主线程，导致图形界面的线程被阻塞了，无法刷新，呈现出未响应的状态。解决的方法就是为Libnids单独开启一个新的线程，让图形界面和libnids逻辑分开。</p></li>
 </ul>
 
 </div>
