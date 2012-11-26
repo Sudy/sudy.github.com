@@ -87,6 +87,8 @@
 
 <time datetime="2012-11-25T20:11:00+08:00" pubdate data-updated="true">Nov 25<span>th</span>, 2012</time>
         
+         | <a href="/blog/2012/11/25/libnidszong-jie/#disqus_thread">Comments</a>
+        
       </p>
     
   </header>
@@ -97,63 +99,13 @@
 <ul>
 <li><p>无法捕获TCP协议的报文</p>
 
-<p>  TCP流还原是Libnids中一个非常重要的功能，一般人在安装完libnids后一般都会拿samples文件夹里的printall.c练练手，看看libnids是否运行正常，这个例子是打印出所有流经网卡的TCP数据包信息。这个问题的起因是libnids默认开启了TCP的首部校验，在这里进行了TCP的首部校验，如果报文无法通过校验，则该报文被丢弃。因此程序虽然能够正常地编译通过，但是却无法捕获到数据包。知道问题的起因，我们就能对症下药。</p>
-
-<p>  解决这个问题通常有两种方法，第一种比较复杂，不推荐使用。在Libnids源码包中tcp.c 文件中大概742行的位置有如下代码：</p>
-
-<pre><code>  if (my_tcp_check(this_tcphdr, iplen - 4 * this_iphdr-&gt;ip_hl,
-           this_iphdr-&gt;ip_src.s_addr, this_iphdr-&gt;ip_dst.s_addr)) {
-         nids_params.syslog(NIDS_WARN_TCP, NIDS_WARN_TCP_HDR, this_iphdr,
-             this_tcphdr);
-         return;
-    }
-</code></pre>
-
-<p>  我们可以看出这段代码是进行TCP首部校验，如果无法通过校验，还会作为NIDS_WARN事件记录到系统日志中。所以我们可以注释掉这段代码，然后对源码进行重新编译安装。一般来说是先步骤如下，首先进入libnids安装包的根目录，然后执行以下命令。</p>
-
-<pre><code>  $ ./configure
-  $ make
-  $ make install
-</code></pre>
-
-<p>  这种方法的不足是使用起来比较复杂，而且在以后对程序进行编译时可能还需要加上编译参数         -lgthread-2.0。</p>
-
-<p>  第二种方法是在libnids的初始化函数nids_init()运行之前，加入如下代码：</p>
-
-<pre><code>  struct nids_chksum_ctl temp;
-  temp.netaddr = 0;
-  temp.mask = 0;
-  temp.action = 1;
-  nids_register_chksum_ctl(&amp;temp,1);
-</code></pre>
-
-<p>  不用说，这段代码的目的也是取消校验和，其中nids_chksum_ctl是libnids中定义的数据结构，netaddr表示网络地址，mask表示掩码，如果两个都为0表示的是所有的地址，action为1表示不用首部校验。</p></li>
-<li><p>C与C++混合编译出现的各种undefined reference错误</p>
-
-<p>  由于Libnids源码大部分使用C编写的（其中还包括部分汇编），因此如果你想在面向对象的程序中使用它可能会出现一点点小麻烦。也许虽然你的程序已经经过了编译这一步，但是在链接的时候总是会出现undefined reference to 错误。这其实是C和C++混编的原因，如果想解决这个问题，在C++文件包含C的头文件时，可以加上extern &#8220;C&#8221;标记，让编译器知道这是C的文件，其中header.h是C的头文件。</p>
-
-<pre><code>  extern "C" { 
-      #include "header.h" 
-  } 
-</code></pre>
-
-<p>  如果想在C++文件中使用C文件中的函数，也可以采用类似的方法，yourfunc表示你想要使用的函数，如下所示，这样可以就可以避免编译中的这些问题了。</p>
-
-<pre><code>  #ifdef __cplusplus
-      extern "C" {
-  #endif
-      void yourfunc(int a,inta)
-  #ifdef __cplusplus
-      }
-  #endif
-</code></pre></li>
-<li><p>libnids与图像界面结合时导致的线程阻塞。</p>
-
-<p>  如果你的程序是使用图像界面的，如QT，MFC等，好不容易让程序能够运行起来，却发现程序时出现了阻塞，也就是界面假死的现象，调试时能够发现运行到nids_run()后便停滞不前了。这是因为nids_run()启动后占用了程序的主线程，导致图形界面的线程被阻塞了，无法刷新，呈现出未响应的状态。解决的方法就是为Libnids单独开启一个新的线程，让图形界面和libnids逻辑分开。</p></li>
-</ul>
-
-</div>
+<p>  TCP流还原是Libnids中一个非常重要的功能，一般人在安装完libnids后一般都会拿samples文件夹里的printall.c练练手，看看libnids是否运行正常，这个例子是打印出所有流经网卡的TCP数据包信息。这个问题的起因是libnids默认开启了TCP的首部校验，在这里进行了TCP的首部校验，如果报文无法通过校验，则该报文被丢弃。因此程序虽然能够正常地编译通过，但是却无法捕获到数据包。知道问题的起因，我们就能对症下药。
+  </div>
   
+  
+    <footer>
+      <a rel="full-article" href="/blog/2012/11/25/libnidszong-jie/">Read on &rarr;</a>
+    </footer>
   
 
 
@@ -181,6 +133,8 @@
 
 
 <time datetime="2012-11-25T16:27:00+08:00" pubdate data-updated="true">Nov 25<span>th</span>, 2012</time>
+        
+         | <a href="/blog/2012/11/25/xie-zai-qian-mian-de-hua/#disqus_thread">Comments</a>
         
       </p>
     
@@ -274,6 +228,19 @@
 
 </footer>
   
+
+<script type="text/javascript">
+      var disqus_shortname = 'sudyduan';
+      
+        
+        var disqus_script = 'count.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
 
 
 

@@ -84,6 +84,8 @@
 
 <time datetime="2012-11-25T20:11:00+08:00" pubdate data-updated="true">Nov 25<span>th</span>, 2012</time>
         
+         | <a href="#disqus_thread">Comments</a>
+        
       </p>
     
   </header>
@@ -94,7 +96,8 @@
 <ul>
 <li><p>无法捕获TCP协议的报文</p>
 
-<p>  TCP流还原是Libnids中一个非常重要的功能，一般人在安装完libnids后一般都会拿samples文件夹里的printall.c练练手，看看libnids是否运行正常，这个例子是打印出所有流经网卡的TCP数据包信息。这个问题的起因是libnids默认开启了TCP的首部校验，在这里进行了TCP的首部校验，如果报文无法通过校验，则该报文被丢弃。因此程序虽然能够正常地编译通过，但是却无法捕获到数据包。知道问题的起因，我们就能对症下药。</p>
+<p>  TCP流还原是Libnids中一个非常重要的功能，一般人在安装完libnids后一般都会拿samples文件夹里的printall.c练练手，看看libnids是否运行正常，这个例子是打印出所有流经网卡的TCP数据包信息。这个问题的起因是libnids默认开启了TCP的首部校验，在这里进行了TCP的首部校验，如果报文无法通过校验，则该报文被丢弃。因此程序虽然能够正常地编译通过，但是却无法捕获到数据包。知道问题的起因，我们就能对症下药。
+  <!-- more --></p>
 
 <p>  解决这个问题通常有两种方法，第一种比较复杂，不推荐使用。在Libnids源码包中tcp.c 文件中大概742行的位置有如下代码：</p>
 
@@ -201,6 +204,12 @@
   </footer>
 </article>
 
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
+
 </div>
 
 <aside class="sidebar">
@@ -277,6 +286,22 @@
 
 </footer>
   
+
+<script type="text/javascript">
+      var disqus_shortname = 'sudyduan';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://Sudy.github.com/blog/2012/11/25/libnidszong-jie/';
+        var disqus_url = 'http://Sudy.github.com/blog/2012/11/25/libnidszong-jie/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = 'http://' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
 
 
 
