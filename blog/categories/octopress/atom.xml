@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Category: Octopress | SudyDuan's Blog]]></title>
+  <link href="http://Sudy.github.com/blog/categories/octopress/atom.xml" rel="self"/>
+  <link href="http://Sudy.github.com/"/>
+  <updated>2012-11-26T17:07:42+08:00</updated>
+  <id>http://Sudy.github.com/</id>
+  <author>
+    <name><![CDATA[Sudy Duan]]></name>
+    <email><![CDATA[SudyDuan@gmail.com]]></email>
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Tips on Octopress]]></title>
+    <link href="http://Sudy.github.com/blog/2012/11/26/tips-on-octopress/"/>
+    <updated>2012-11-26T15:05:00+08:00</updated>
+    <id>http://Sudy.github.com/blog/2012/11/26/tips-on-octopress</id>
+    <content type="html"><![CDATA[<h1>Recommendations</h1>
+
+<ul>
+<li>如果你使用的Chrome浏览器的话，推荐一款非常优秀的MarkDown编辑器插件<a href="https://chrome.google.com/webstore/detail/made/oknndfeeopgpibecfjljjfanledpbkog">MaDe</a>,所见即所得哦。这样写博客的时候，你可以先在插件里调整好样式，然后再部署，省去了频繁预览的麻烦。</li>
+</ul>
+
+
+<!-- more -->
+
+
+<h1>Tips</h1>
+
+<ul>
+<li><p>如果在博客的主页中，你只想显示每篇博客的部分内容（相当与论文的摘要部分），而不是默认的整篇文章完全显示，那么我们可以在博客中添加&lt;!-- more -->标签，这样标签下面的部分便不显示在主页中，取而代之的是一个Read On的按钮，当然你也可以在_config.yml中修改主页中每页显示的博客文章数量和按钮上的文字，具体如下面的代码所示。</p>
+
+<pre><code>  paginate: 10          # Posts per page on the blog index
+  pagination_dir: blog  # Directory base for pagination URLs eg. /blog/page/2/
+  recent_posts: 5       # Posts in the sidebar Recent Posts section
+  excerpt_link: "Read on &amp;rarr;"  
+</code></pre></li>
+<li><p>如果你想在文章中添加评论功能，首先必须保证的是在你该篇文章的首部中设置评论功能打开（默认是开启的）。</p>
+
+<pre><code>  comments: true
+</code></pre>
+
+<p>  然后你可以在<em>config.yml设置<a href="http://www.disqus.com/">disqus</a>的用户名。disqus是一个评论管理的平台，国外的许多著名网站使用的都是它提供的评论管理功能。如果没有帐号的话，那么首先得注册一个，然后填入</em>config.yml中下面的字段，再将disqus_show_comment_count的false改为true,当然你也可能使用国内平台（如多说）提供的评论功能，这里就不详细介绍了。</p>
+
+<pre><code>  # Disqus Comments
+  disqus_short_name: your-name-on-disqus
+  disqus_show_comment_count: true
+</code></pre></li>
+<li><p>更换Octopress的主题。默认的Octopress主题可能给你一种千篇一律的感觉，所以你可以在<a href="https://github.com/imathis/octopress/wiki/3rd-Party-Octopress-Themes">这里</a>找到很多第三方提供的主题，然后按照提示覆盖默认的主题就可以了。</p></li>
+</ul>
+
+]]></content>
+  </entry>
+  
+</feed>
